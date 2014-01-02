@@ -1,0 +1,118 @@
+﻿@model List<CellPhoneShop.SanPham>
+@{
+    ViewBag.Title = "Trang chủ";
+    string link = ViewBag.LinkService;
+}
+<div class="title-content">
+</div>
+<div class="nav-page push10">
+    <a>Cellphone</a> » <span class="active-link"><a>Trang chủ</a>
+    </span>
+</div>
+@Html.Partial("Sidebar")
+
+<div id="gallery" class="three_quarter">
+    <section>
+        <figure>
+            <div class="title-content ">
+                <h2>Sản phẩm mới</h2>
+            </div>
+            <ul id="List" class="clear">
+                @foreach (CellPhoneShop.SanPham sp in Model)
+                {
+                    <li class="one_quarter">
+                        <a href="/Product/Details?id=@sp.MaSP">
+                            <div class="product">
+                                <img src="@(link + sp.HinhAnhDaiDien)" />
+                                <div class="info-product">
+                                    <p class="name-product">@sp.TenSP</p>
+                                    <p class="cost">@sp.GiaToString VNĐ</p>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                }
+            </ul>
+        </figure>
+    </section>
+    <nav class="pagination">
+        <ul>
+            @for (int i = 0; i < ViewBag.TotalPage; i++)
+            {
+                int page = i + 1;
+                string strClass = "";
+                if (page == 1)
+                {
+                    strClass = " active-page";
+                }
+                <li>
+                    @Ajax.ActionLink(page.ToString(),
+                        "NewProduct",
+                        "Product",
+                        new { page = page.ToString() },
+                        new AjaxOptions() { HttpMethod = "GET", OnSuccess = "populateProducts" }, new { @class = "ajax-link" + strClass })
+                </li>   
+            }
+        </ul>
+    </nav>
+</div>
+
+
+@section Scripts {
+    <script>
+        var template = "{{#.}}\
+            <li class=\"one_quarter\">\
+                <a href=\"/Product/Details?id={{MaSP}}\">\
+                    <div class=\"product\">\
+                        <img src=\"@link{{HinhAnhDaiDien}}\"/>\
+                        <div class=\"info-product\">\
+                            <p class=\"name-product\">{{TenSP}}</p>\
+                            <p class=\"cost\">{{GiaToString}} VNĐ</p>\
+                        </div>\
+                    </div>\
+                </a>\
+            </li>\
+        {{/.}}";
+
+        function populateProducts(data) {
+            $('#List').html(Mustache.render(template, data.data));
+        }
+
+        $(document).ready(function () {
+            $.ajax({
+                url: "/Product/NewProduct",
+                type: "GET",
+                success: populateProducts,
+            })
+
+            $(".ajax-link").click(function () {
+                var links = $(".pagination").find(".ajax-link");
+                if (links != null) {
+                    for (var i = 0; i < links.length; i++) {
+                        $(links[i]).removeClass("active-page");
+                    }
+                }
+                $(this).addClass("active-page");
+            });
+
+            loadNews();
+        });
+
+    </script>
+
+    <script>
+        var newstl = "{{#.}}<div class=\"promotion\"><img src='{{Hinh}}'><a href='{{Link}}'>{{TieuDe}}</a></div>{{/.}}";
+        function showNews(data) {
+            $('#list-promotion').html(Mustache.render(newstl, data));
+        }
+
+        function loadNews() {
+            $.ajax({
+                url: "/Home/News",
+                type: "GET",
+                success: showNews,
+            })
+        }
+
+    </script>
+}

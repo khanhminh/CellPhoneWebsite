@@ -1,0 +1,280 @@
+﻿@model List<CellPhoneShop.SanPham>
+@using CellPhoneShop
+@{
+    ViewBag.Title = "So sánh";
+    float width = (float)80.0 / Model.Count;
+    string link = ViewBag.LinkService;
+}
+
+<h2 class="title-content push50">SO SÁNH</h2>
+<div class="nav-page push10">
+    <a>Sản phẩm</a> » <span class="active-link"><a>So Sánh</a>
+    </span>
+</div>
+<div class="compare-header">
+    <span>SẢN PHẨM</span>
+</div>
+<div class="compare-products clear">
+    <div class="one_fifth header-row"></div>
+    @foreach (SanPham sp in Model)
+    {     	
+        <div class="compare-product one_fifth"  style="width: @width%">
+            <a href="Details?id=@sp.MaSP">
+                <img src="@(link + sp.HinhAnhDaiDien)" style="height: 200px"/>
+            </a>
+            <div class="compare-product-info">
+                <h2>
+                    <a href="Details?id=@sp.MaSP">@sp.TenSP</a>
+                </h2>
+                <h3>
+                    @string.Format("{0:0,0} VNĐ", sp.GiaBanHienHanh)
+                </h3>
+            </div>
+            <a href="/ShoppingCart/AddToCart?id=@sp.MaSP">
+                <img src="/images/btn_addcart_vn.gif" />
+            </a>
+            <div class="clear"></div>
+        </div>
+    }
+</div>
+
+<div class="compare-rating" id="compare-rating">
+    <div class="compare-header">
+        <span>ĐÁNH GIÁ</span>
+    </div>
+    <table class="compare-table">
+        <tr>
+            <td class="header-row"></td>
+            @foreach (SanPham sp in Model)
+            {              
+                <td style="width: @width%">
+                    <div class="compare-star" data-score="@sp.DiemDanhGia">
+                        <img src="/images/star-off.png" />
+                        <img src="/images/star-off.png" />
+                        <img src="/images/star-off.png" />
+                        <img src="/images/star-off.png" />
+                        <img src="/images/star-off.png" />
+                    </div>
+                    <div class="compare-score">
+                        <span>@Math.Round(sp.DiemDanhGia, 1)</span>
+                    </div>
+                </td>
+            }
+        </tr>
+    </table>
+</div>
+
+<div class="compare-info-product">
+    <div class="compare-header">
+        <span>CHI TIẾT SẢN PHẨM</span>
+    </div>
+    <table class="compare-table">
+        <tr>
+            <td class="header-row">Loại màn hình</td>
+            @foreach (SanPham sp in Model)
+            {
+				<td style="width: @width%">@sp.ChiTietSanPham.LoaiManHinh&nbsp;</td>
+            }
+        </tr>
+        <tr>
+            <td class="header-row">Kích thước màn hình</td>
+            @foreach (SanPham sp in Model)
+            {
+                <td>@sp.ChiTietSanPham.KichThuocMH inch</td>
+            }
+        </tr>
+        <tr>
+            <td class="header-row">Độ phân giải</td>
+            @foreach (SanPham sp in Model)
+            {
+                <td>@sp.ChiTietSanPham.DoPhanGiai pixels</td>
+            }
+        </tr>
+        <tr>
+            <td class="header-row">Cảm ứng</td>
+            @foreach (SanPham sp in Model)
+            {
+                <td>@sp.ChiTietSanPham.CamUng</td>
+            }
+        </tr>
+        <tr>
+            <td class="header-row">Hệ điều hành</td>
+            @foreach (SanPham sp in Model)
+            {
+                <td>@sp.ChiTietSanPham.HeDieuHanh.Ten</td>
+            }
+        </tr>
+        <tr>
+            <td class="header-row">CPU</td>
+            @foreach (SanPham sp in Model)
+            {
+                <td>@sp.ChiTietSanPham.CPU</td>
+            }
+        </tr>
+        <tr>
+            <td class="header-row">GPU</td>
+            @foreach (SanPham sp in Model)
+            {
+                <td>@sp.ChiTietSanPham.GPU</td>
+            }
+        </tr>
+        <tr>
+            <td class="header-row">RAM</td>
+            @foreach (SanPham sp in Model)
+            {
+                <td>@(sp.ChiTietSanPham.DungluongRAM + sp.ChiTietSanPham.DonViRAM)</td>
+            }
+        </tr>
+        <tr>
+            <td class="header-row">Bộ nhớ trong(ROM)</td>
+            @foreach (SanPham sp in Model)
+            {
+                <td>@sp.ChiTietSanPham.BoNhoTrong MB</td>
+            }
+        </tr>
+        <tr>
+            <td class="header-row">Hỗ trợ thẻ nhớ ngoài</td>
+            @foreach (SanPham sp in Model)
+            {
+                <td>@(!sp.ChiTietSanPham.HoTroTheNho.HasValue || sp.ChiTietSanPham.HoTroTheNho.Value == false ? "Không" : "Có")</td>
+            }
+        </tr>
+        <tr>
+            <td class="header-row">Camera</td>
+            @foreach (SanPham sp in Model)
+            {
+                <td>@sp.ChiTietSanPham.Camera</td>
+            }
+        </tr>
+        <tr>
+            <td class="header-row">Số SIM hỗ trợ</td>
+            @foreach (SanPham sp in Model)
+            {
+                <td>@sp.ChiTietSanPham.SoSIM</td>
+            }
+        </tr>
+        <tr>
+            <td class="header-row">Cảm biến</td>
+            @foreach (SanPham sp in Model)
+            {
+                <td>@sp.ChiTietSanPham.CamBien</td>
+            }
+        </tr>
+        <tr>
+            <td class="header-row">2G</td>
+            @foreach (SanPham sp in Model)
+            {
+                <td>@sp.ChiTietSanPham.C_2G</td>
+            }
+        </tr>
+        <tr>
+            <td class="header-row">3G</td>
+            @foreach (SanPham sp in Model)
+            {
+                <td>@sp.ChiTietSanPham.C_3G</td>
+            }
+        </tr>
+        <tr>
+            <td class="header-row">Wifi</td>
+            @foreach (SanPham sp in Model)
+            {
+                <td>@sp.ChiTietSanPham.Wifi</td>
+            }
+        </tr>
+        <tr>
+            <td class="header-row">GPS</td>
+            @foreach (SanPham sp in Model)
+            {
+                <td>@sp.ChiTietSanPham.GPS</td>
+            }
+        </tr>
+        <tr>
+            <td class="header-row">Bluetooth</td>
+            @foreach (SanPham sp in Model)
+            {
+                <td>@sp.ChiTietSanPham.Bluetooth</td>
+            }
+        </tr>
+        <tr>
+            <td class="header-row">Pin</td>
+            @foreach (SanPham sp in Model)
+            {
+                <td>@sp.ChiTietSanPham.LoaiPin</td>
+            }
+        </tr>
+        <tr>
+            <td class="header-row">Dung lượng Pin</td>
+            @foreach (SanPham sp in Model)
+            {
+                <td>@sp.ChiTietSanPham.DungLuongPin mAh</td>
+            }
+        </tr>
+        <tr>
+            <td class="header-row">Trọng lượng</td>
+            @foreach (SanPham sp in Model)
+            {
+                <td>@sp.ChiTietSanPham.TrongLuong gam</td>
+            }
+        </tr>
+        <tr>
+            <td class="header-row">Kích thước</td>
+            @foreach (SanPham sp in Model)
+            {
+                <td>@sp.ChiTietSanPham.KichThuoc</td>
+            }
+        </tr>
+        <tr>
+            <td class="header-row">Bảo hành</td>
+            @foreach (SanPham sp in Model)
+            {
+                <td>@sp.ChiTietSanPham.BaoHanh tháng</td>
+            }
+        </tr>
+    </table>
+</div>
+
+<div class="clear push20"></div>
+<script>
+    function showRating(context, score) {
+        if (score == 0)
+            return;
+
+        var arr = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
+        var min = arr[0];
+        for (var i = 1; i < arr.length; i++) {
+            if (Math.abs(arr[i] - score) < Math.abs(min - score)) {
+                min = arr[i];
+            }
+        }
+        score = min;
+        var limit = Math.round(score - 0.1);
+
+        var list = $(context).children();
+        var index = 0;
+        for (; index < list.length; index++) {
+            var img = $(list[index]);
+            if (index < limit) {
+                img.attr('src', "/images/star-on.png");
+            } else {
+                img.attr('src', "/images/star-off.png");
+            }
+        }
+        if (score - limit > 0.1) {
+            var img = $(list[limit]);
+            img.attr('src', "/images/star-half.png");
+        }
+    }
+
+    function setRating() {
+        var ratings = $('#compare-rating').find('.compare-star');
+        for (var i = 0; i < ratings.length; i++) {
+            var rating = ratings[i];
+            var score = $(rating).attr('data-score');
+            showRating(rating, score);
+        }
+    }
+
+    $(document).ready(function () {
+        setRating();
+    });
+</script>

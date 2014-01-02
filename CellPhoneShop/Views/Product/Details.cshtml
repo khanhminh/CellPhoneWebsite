@@ -1,0 +1,498 @@
+﻿@model CellPhoneShop.SanPham
+@using CellPhoneShop
+@{
+    ViewBag.Title = "Chi tiết sản phẩm";
+    string Link = ViewBag.LinkService;
+    ChiTietSanPham ctsp = Model.ChiTietSanPham;
+    List<HinhAnh> hinhanhs = ctsp.HinhAnhs;
+    string Username = "";
+    if (Request.IsAuthenticated)
+    {
+        Username = User.Identity.Name;
+    }
+}
+
+<script type="text/javascript" src="/Scripts/jquery.jcarousel.js"></script>
+
+
+<div class="wrapper row3">
+    <div id="container">
+        <h2 class="title-content push50">THÔNG TIN SẢN PHẨM</h2>
+        <div class="clear push20"></div>
+        <div id="left-info" class="two_quarter">
+            <div id="amazingslider-2" style="margin: auto">
+                <ul class="amazingslider-slides" style="display: none;">
+                    @foreach (HinhAnh ha in hinhanhs)
+                    {
+                        <li>
+                            <img src="@(Link + ha.DuongDan)" class="img-details" /></li>
+                    }
+                </ul>
+                <ul class="amazingslider-thumbnails" style="display: none;">
+                    @foreach (HinhAnh ha in hinhanhs)
+                    {
+                        <li>
+                            <img src="@(Link + ha.DuongDan)" /></li>
+                    }
+                </ul>
+            </div>
+        </div>
+        <div id="right-info" class="two_quarter">
+            <h2 id="name">@Model.TenSP</h2>
+            <div class="rating" id="rating-score"
+				data-score="@Model.DiemDanhGia">
+                <img src="/images/star-off.png" />
+                <img src="/images/star-off.png" />
+                <img src="/images/star-off.png" />
+                <img src="/images/star-off.png" />
+                <img src="/images/star-off.png" />
+
+                <span class="score-rate"></span>
+            </div>
+            <h3 id="status">
+                @{
+                    string trangthai = Model.SoLuong > 0 ? "Còn hàng" : "Hết hàng";
+                }
+                @trangthai
+            </h3>
+            <div id="cost">
+                <h2>@Model.GiaToString VNĐ</h2>
+                <button class="button small blue" id="btn-compare">So sánh</button>
+            </div>
+            <table>
+                <tr>
+                    <td class="sub-info">Hãng sản xuất:</td>
+                    @{
+                        string tenNsx = "";
+                        foreach (NhaSanXuat nsx in ViewBag.Brands)
+                        {
+                            if (nsx.MaNSX == Model.MaNSX)
+                            {
+                                tenNsx = nsx.Ten;
+                                break;
+                            }
+                        }
+                    }
+                    <td>@tenNsx</td>
+                </tr>
+                <tr>
+                    <td class="sub-info">Bảo hành:</td>
+                    <td>@ctsp.BaoHanh Tháng</td>
+                </tr>
+                <tr>
+                    <td class="sub-info">Ngày cập nhật:</td>
+                    <td>@(string.Format("{0:dd/MM/yyyy}", Model.NgayNhap))</td>
+                </tr>
+            </table>
+            <div>
+                <a href="/ShoppingCart/AddToCart?id=@Model.MaSP">
+                    <img src="/Images/btn_addcart_vn.gif" />
+                </a>
+                <iframe src="//www.facebook.com/plugins/like.php?href=http%3A%2F%2Flocalhost%3A43857&amp;width&amp;layout=button_count&amp;action=like&amp;show_faces=true&amp;share=true&amp;height=21&amp;appId=188837597989902" scrolling="no" frameborder="0" style="border:none; overflow:hidden; height:21px;" allowTransparency="true"></iframe>
+            </div>
+        </div>
+        <div class="clear"></div>
+
+
+        <div id="bottom-info">
+            <h3 class="title-info">CHI TIẾT SẢN PHẨM</h3>
+            @Html.Partial("DetailPartial", ctsp)
+        </div>
+        <div class="clear push50"></div>
+
+        <div id="relate-product">
+            <h3 class="title-info">SẢN PHẨM LIÊN QUAN</h3>
+            <ul id="mycarousel" class="jcarousel-skin-tango">
+            </ul>
+        </div>
+
+        <div id="user-rating">
+            <h3 class="title-info">ĐÁNH GIÁ</h3>
+            <div class="rating">
+                <div id="list-star">
+                    <img src="/images/star-off.png" />
+                    <img src="/images/star-off.png" />
+                    <img src="/images/star-off.png" />
+                    <img src="/images/star-off.png" />
+                    <img src="/images/star-off.png" />
+                    <span class="score-rate"></span>
+                </div>
+
+                <span class="count-rate">(<span id="count-rate">0</span> lượt đánh giá)</span>
+            </div>
+            <span class="rating-title">Đánh giá của bạn về sản
+				phẩm: </span>
+            <div class="frm-rating">
+                <div>
+                    <input type="radio" name="rbtRating" class="rbtRating"
+                        data-number="5">
+                    <div class="row-rating">
+                        <img src="/images/star-on.png" />
+                        <img
+                            src="/images/star-on.png" />
+                        <img
+                            src="/images/star-on.png" />
+                        <img
+                            src="/images/star-on.png" />
+                        <img
+                            src="/images/star-on.png" />
+                    </div>
+                </div>
+                <div>
+                    <input type="radio" name="rbtRating" class="rbtRating"
+                        data-number="4">
+                    <div class="row-rating">
+                        <img src="/images/star-on.png" />
+                        <img
+                            src="/images/star-on.png" />
+                        <img
+                            src="/images/star-on.png" />
+                        <img
+                            src="/images/star-on.png" />
+                    </div>
+                </div>
+                <div>
+                    <input type="radio" name="rbtRating" class="rbtRating"
+                        data-number="3">
+                    <div class="row-rating">
+                        <img src="/images/star-on.png" />
+                        <img
+                            src="/images/star-on.png" />
+                        <img
+                            src="/images/star-on.png" />
+                    </div>
+                </div>
+                <div>
+                    <input type="radio" name="rbtRating" class="rbtRating"
+                        data-number="2">
+                    <div class="row-rating">
+                        <img src="/images/star-on.png" />
+                        <img
+                            src="/images/star-on.png" />
+                    </div>
+                </div>
+                <div>
+                    <input type="radio" name="rbtRating" class="rbtRating"
+                        data-number="1">
+                    <div class="row-rating">
+                        <img src="/images/star-on.png" />
+                    </div>
+                </div>
+            </div>
+            <span id="rating-notify"></span>
+            <button id="btnRating" class="button small blue">Chọn</button>
+        </div>
+
+        <div id="comments">
+            <h3 class="title-info">BÌNH LUẬN</h3>
+            <div class="comment-content">
+                @using (Ajax.BeginForm("PostComment", "Comment", new { MaSP = Model.MaSP }, new AjaxOptions() { HttpMethod = "POST", OnSuccess = "successPostComment" }, new { id = "frm-comment" }))
+                {
+                    <label>Tên:</label>
+                    if (Request.IsAuthenticated)
+                    {
+                    <input id="txtName" name="HoTen" type="text" value="@Username" readonly="readonly"/>
+                    }
+                    else
+                    {
+                    <input id="txtName" name="HoTen" type="text" />
+                    }
+                    <label>Nhận xét:</label>
+                    <textarea id="txtComment" name="NoiDung"></textarea>
+                    <button id="btSend" type="submit" class="button small blue">Gửi</button>
+                }
+                <div id="list-comment">
+                </div>
+                <nav class="pagination">
+                    <ul id="pages">
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="dialog" title="So sánh">
+    <table id="tbPrice">
+        <tr>
+            <td style="color:green;font-weight:bold">CellPhone</td>
+            <td style="color:red;font-weight:bold">@Model.GiaToString VNĐ</td>
+        </tr>
+    </table>
+    <p style="font-family: Arial;">*Thông tin chỉ mang tính chất tham khảo</p>
+</div>
+<script>
+    $("#dialog").dialog({
+        autoOpen: false,
+        modal: true,
+        width: 400
+    });
+       
+    var priceTemplate = "<tr><td><a href='Link'>Ten</a></td><td class='cost'>Gia</td></tr>";
+
+
+    function loadPCSuccess(data) {
+        for (var i = 0; i < data.length; i++) {
+            var ss = data[i];
+            var gia = "Không kinh doanh";
+            if (ss.Gia.trim() != "") {
+                gia = formatCurrency(ss.Gia);
+            }
+            var tr = priceTemplate.replace("Link", ss.Website.Link)
+                .replace("Ten", ss.Website.Ten)
+                .replace("Gia", gia);
+            $(tr).appendTo('#tbPrice');
+        }
+    }
+
+    function loadPriceCompare() {
+        $.ajax({
+            data: { id: "@Model.MaSP" },
+            url: "/Product/GetPriceCompare",
+            type: "GET",
+            success: loadPCSuccess,
+        })
+    }
+
+    function formatCurrency(num) {
+        num = num.toString().replace(/\$|\,/g, '');
+        if (isNaN(num))
+            num = "0";
+        sign = (num == (num = Math.abs(num)));
+        num = Math.floor(num * 100 + 0.50000000001);
+        cents = num % 100;
+        num = Math.floor(num / 100).toString();
+        if (cents < 10)
+            cents = "0" + cents;
+        for (var i = 0; i < Math.floor((num.length - (1 + i)) / 3) ; i++)
+            num = num.substring(0, num.length - (4 * i + 3)) + ',' +
+            num.substring(num.length - (4 * i + 3));
+        return (((sign) ? '' : '-') + num + ' VNĐ');
+    }
+
+   
+</script>
+
+<script>
+    var templatebl = "{{#.}}\
+                        <div class=\"comment\">\
+                              <img class=\"avatar\" src=\"/images/avatar.png\" />\
+                              <span class=\"name\">{{HoTen}}</span>\
+                              <span class=\"time\">{{NgayToString}}</span>\
+                              <blockquote>{{NoiDung}}</blockquote>\
+                        </div>\
+                      {{/.}}";
+    var templatelink = "<li><a class='CLASS' data-ajax='true' data-ajax-method='GET' data-ajax-success='showComments' href='/Comment/GetComments?id=@Model.MaSP&page={{page}}'>{{page}}</a></li>";
+
+    function resetForm() {
+        $("#txtName").val("");
+        $("#txtComment").val("")
+    }
+
+    function showComments(data) {
+        $('#list-comment').html(Mustache.render(templatebl, data.comments));
+        var pageCount = data.totalPage;
+        var links = "";
+        for (var i = 0; i < pageCount; i++) {
+            var link = templatelink.replace("{{page}}", i + 1).replace("{{page}}", i + 1);
+            var strClass = "ajax-link";
+            if (i + 1 == data.page) {
+                strClass += " active-page";
+            }
+            link = link.replace("CLASS", strClass);
+            links += " " + link;
+        }
+        $('#pages').html(links);
+    }
+
+    function loadComment(page) {
+        $.ajax({
+            data: { id: "@Model.MaSP", page: page },
+            url: "/Comment/GetComments",
+            type: "GET",
+            success: showComments,
+        })
+    }
+
+    function successPostComment(data) {
+        if (data == true) {
+            resetForm();
+            loadComment(1);
+        }
+        else {
+            alert("post comment loi");
+        }
+    }
+
+    $(function () {
+        $('#btSend').click(function (event) {
+            var name = $("#txtName").val();
+            var comment = $("#txtComment").val();
+            if (jQuery.trim(name) == "" || jQuery.trim(comment) == "") {
+                event.preventDefault();
+            }
+        });
+    });
+</script>
+<script>
+    var isWaitRating = false;
+    var maSP = "@Model.MaSP";
+
+    function loadRatingSuccess(data) {
+        showRating(data.score, data.count);
+    }
+
+
+    function loadRating() {
+        $.ajax({
+            url: "/Rating/Get",
+            data: {
+                id: maSP,
+            },
+            type: "GET",
+            success: loadRatingSuccess,
+        });
+    }
+
+
+    function callbackRating(data) {
+        var notify = $('#rating-notify');
+        if (data == 1) {
+            notify.text("Đánh giá của bạn đã được cập nhật");
+            notify.attr("style", "color:green;");
+            loadRating();
+        }
+        else {
+            var msg = "";
+            notify.attr("style", "color:red;");
+            if (data == 0) {
+                msg = "Vui lòng đăng nhập!";
+            }
+            else {
+                msg = "Đã có lỗi xảy ra!";
+            }
+            notify.text(msg);
+        }
+        isWaitRating = false;
+    }
+
+    function rating() {
+        var number = checkSelect();
+        if (number < 1 || number > 5) {
+            isWaitRating = false;
+            $('#rating-notify').text("Vui lòng chọn đánh giá!");
+            $('#rating-notify').attr("style", "color:red;");
+            return;
+        }
+
+        $.ajax({
+            url: "/Rating/Rating",
+            data: {
+                id: maSP,
+                score: number
+            },
+            type: "GET",
+            success: callbackRating,
+        });
+    }
+
+    function checkSelect() {
+        var number = -1;
+        var list = $(".frm-rating").find(".rbtRating");
+        for (var i = 0; i < list.length; i++) {
+            var radio = $(list[i]);
+            if (radio.is(':checked')) {
+                number = radio.attr("data-number");
+                return number;
+            }
+        }
+
+        return number;
+    }
+
+    function showRating(score, count) {
+        $('.score-rate').text(score.toFixed(1));
+        $('#count-rate').text(count);
+        if (score == 0) return;
+
+        var arr = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
+        var min = arr[0];
+        for (var i = 1; i < arr.length; i++) {
+            if (Math.abs(arr[i] - score) < Math.abs(min - score)) {
+                min = arr[i];
+            }
+        }
+        score = min;
+        var limit = Math.round(score - 0.1);
+
+        var list = $('#rating-score').children();
+        var index = 0;
+        for (; index < list.length; index++) {
+            var img = $(list[index]);
+            if (index < limit) {
+                img.attr('src', "/images/star-on.png");
+            }
+            else {
+                img.attr('src', "/images/star-off.png");
+            }
+        }
+        if (score - limit > 0.1) {
+            var img = $(list[limit]);
+            img.attr('src', "/images/star-half.png");
+        }
+        $('#list-star').html($('#rating-score').html());
+    }
+
+
+    var templatesplq = "{{#.}}\
+            <li class=\"one_quarter\">\
+                <a href=\"/Product/Details?id={{MaSP}}\">\
+                    <div class=\"product\">\
+                        <img src=\"@Link{{HinhAnhDaiDien}}\"/>\
+                        <div class=\"info-product\">\
+                            <p class=\"name-product\">{{TenSP}}</p>\
+                            <p class=\"cost\">{{GiaToString}} VNĐ</p>\
+                        </div>\
+                    </div>\
+                </a>\
+            </li>\
+        {{/.}}";
+
+    function showRelativeProduct(data) {
+        $('#mycarousel').html(Mustache.render(templatesplq, data));
+        jQuery('#mycarousel').jcarousel();
+    }
+
+    function loadRelativeProduct() {
+        var id = $('#user-rating').attr('data-productId');
+        $.ajax({
+            url: "/Product/RelativeProduct",
+            data: {
+                id: "@Model.MaSP",
+            },
+            type: "GET",
+            success: showRelativeProduct,
+        });
+    }
+
+    $(document).ready(function () {
+        $('.rbtRating').click(function () {
+            $('#rating-notify').text("");
+        });
+
+        $('#btnRating').click(function () {
+            if (!isWaitRating) {
+                isWaitRating = true;
+                rating();
+            }
+        });
+
+        $('#btn-compare').click(function () {
+            $("#dialog").dialog("open");
+        });
+
+        loadRelativeProduct();
+        loadComment(1);
+        loadRating();
+        loadPriceCompare();
+    });
+</script>

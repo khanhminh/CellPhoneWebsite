@@ -1,0 +1,10 @@
+﻿@model int
+@{
+    ViewBag.Title = "Minh Khanh";
+}
+
+<h2 class="title-content push50">HOÀN TẤT</h2>
+<div id="order-info">
+    <p>Bạn đã đặt hàng thành công. Mã đơn đặt hàng của bạn: <span>@Model</span></p>
+    @Html.ActionLink("Trang chủ", "Index", "Home")
+</div>

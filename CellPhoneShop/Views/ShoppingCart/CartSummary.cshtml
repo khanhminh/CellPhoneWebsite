@@ -1,0 +1,7 @@
+﻿<div id="cart">
+    <img src="/Images/cart.png" />
+    @Html.ActionLink("Giỏ hàng(" + ViewData["CartCount"] + ")",
+    "Index",
+    "ShoppingCart",
+    new { id = "cart-status" })
+</div>

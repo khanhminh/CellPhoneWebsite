@@ -1,0 +1,22 @@
+﻿@model CellPhoneShop.ViewModel.ShoppingCart
+@{
+    ViewBag.Title = "Shopping Cart";
+}
+
+<h2 class="title-content push50">GIỎ HÀNG</h2>
+
+<div id="nav-shopping">
+    <strong>
+        <span class="active-link">
+            <a href="/ShoppingCart/Index">Giỏ hàng</a>
+        </span>
+        » Thông tin đơn hàng » Hoàn tất
+    </strong>
+</div>
+@Html.Partial("ShoppingCartPartial", Model, new ViewDataDictionary { { "AllowRemove", true } })
+<div id="button-cart">
+    <input type="button" value="Tiếp tục mua" class="button small blue"
+        onclick="location.href = '/Product/Index';">
+    <input type="button" class="button small blue"
+        value="Thanh toán" onclick="location.href = '/Checkout/DetailsPayment';">
+</div>

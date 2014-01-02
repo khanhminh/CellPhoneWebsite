@@ -1,0 +1,161 @@
+﻿@model CellPhoneShop.ChiTietSanPham
+<table>
+    <tbody>
+        <!-- chi tiet man hinh -->
+        <tr class="group">
+            <td class="group-info" colspan="3">Màn hình</td>
+        </tr>
+        <tr>
+        	<td class="none-border"></td>
+            <td class="name-info">Loại màn hình:</td>
+            <td>@Model.LoaiManHinh</td>
+        </tr>
+        <tr>
+            <td class="none-border"></td>
+            <td class="name-info">Kích thước màn hình:</td>
+            <td>@Model.KichThuocMH inch</td>
+        </tr>
+        <tr>
+            <td class="none-border"></td>
+            <td class="name-info">Độ phân giải:</td>
+            <td>@Model.DoPhanGiai pixels</td>
+        </tr>
+        <tr>
+            <td class="none-border"></td>
+            <td class="name-info">Cảm ứng:</td>
+            <td>@Model.CamUng</td>
+        </tr>
+        
+        <!-- cau hinh chi tiet -->
+        <tr class="group">
+            <td class="group-info" colspan="3">Cấu hình chi tiết</td>
+        </tr>
+        <tr>
+            <td class="none-border"></td>
+            <td class="name-info">Hệ điều hành:</td>
+            <td>@Model.HeDieuHanh.Ten</td>
+        </tr>
+        <tr>
+            <td class="none-border"></td>
+            <td class="name-info">CPU</td>
+            <td>@Model.CPU</td>
+        </tr>
+        <tr>
+            <td class="none-border"></td>
+            <td class="name-info">GPU:</td>
+            <td>@Model.GPU</td>
+        </tr>
+        <tr>
+            <td class="none-border"></td>
+            <td class="name-info">RAM:</td>
+            <td>@(Model.DungluongRAM + Model.DonViRAM)</td>
+        </tr>
+        <tr>
+            <td class="none-border"></td>
+            <td class="name-info">Bộ nhớ trong(ROM):</td>
+            <td>@Model.BoNhoTrong MB</td>
+        </tr>
+        <tr>
+            <td class="none-border"></td>
+            <td class="name-info">Hỗ trợ thẻ nhớ ngoài:</td>
+            @{
+                string hotro = !Model.HoTroTheNho.HasValue || !Model.HoTroTheNho.Value ? "Có" : "Không";
+            }
+            <td>@hotro</td>
+        </tr>
+        <tr>
+            <td class="none-border"></td>
+            <td class="name-info">Camera:</td>
+            <td>@Model.Camera</td>
+        </tr>
+        <tr>
+            <td class="none-border"></td>
+            <td class="name-info">Quay phim:</td>
+            <td></td>
+        </tr>
+        <tr class="group">
+            <td class="group-info" colspan="3">Chức năng khác</td>
+        </tr>        
+         <tr>
+            <td class="none-border"></td>
+            <td class="name-info">Số SIM hỗ trợ:</td>
+            <td>@Model.SoSIM</td>
+        </tr>  
+        <tr>
+            <td class="none-border"></td>
+            <td class="name-info">Ngôn ngữ:</td>
+            <td>@Model.NgonNgu</td>
+        </tr>
+        <tr>
+            <td class="none-border"></td>
+            <td class="name-info">Jack tai nghe:</td>
+            <td>@Model.JackTaiNghe</td>
+        </tr>
+        <tr>
+            <td class="none-border"></td>
+            <td class="name-info">Cảm biến:</td>
+            <td>@Model.CamBien</td>
+        </tr>    
+        <tr>
+            <td class="none-border"></td>
+            <td class="name-info">Ghi âm:</td>
+            <td>Có</td>
+        </tr>
+        <tr>
+            <td class="none-border"></td>
+            <td class="name-info">Radio FM:</td>
+            <td>Có</td>
+        </tr>
+        <tr class="group">
+            <td class="group-info" colspan="3">Kết nối dữ liệu</td>
+        </tr>
+        <tr>
+            <td class="none-border"></td>
+            <td class="name-info">2G:</td>
+            <td>@Model.C_2G</td>
+        </tr>
+        <tr>
+            <td class="none-border"></td>
+            <td class="name-info">3G:</td>
+            <td>@Model.C_3G</td>
+        </tr>
+        <tr>
+            <td class="none-border"></td>
+            <td class="name-info">Wifi:</td>
+            <td>@Model.Wifi</td>
+        </tr>
+        <tr>
+            <td class="none-border"></td>
+            <td class="name-info">GPS:</td>
+            <td>@Model.GPS</td>
+        </tr>
+        <tr>
+            <td class="none-border"></td>
+            <td class="name-info">Bluetooth:</td>
+            <td>@Model.Bluetooth</td>
+        </tr>
+        <tr class="group">
+            <td class="group-info" colspan="3">Thông số vật lý</td>
+        </tr>
+        <tr>
+            <td class="none-border"></td>
+            <td class="name-info">Pin</td>
+            <td>@Model.LoaiPin</td>
+        </tr>
+        <tr>
+            <td class="none-border"></td>
+            <td class="name-info">Dung lượng Pin</td>
+            <td>@Model.DungLuongPin mAh</td>
+        </tr>
+        <tr>
+            <td class="none-border"></td>
+            <td class="name-info">Trọng lượng</td>
+            <td>@Model.TrongLuong gam</td>
+        </tr>
+        <tr>
+            <td class="none-border"></td>
+            <td class="name-info">Kích thước</td>
+            <td>@Model.KichThuoc</td>
+        </tr>
+    </tbody>
+</table>

@@ -1,0 +1,350 @@
+﻿@{
+    ViewBag.Title = "Sản phẩm";
+    string Link = ViewBag.LinkService;
+}
+
+<h2 class="title-content push50">SẢN PHẨM</h2>
+<div class="nav-page push10">
+    <a>CellPhone</a> » <span class="active-link"><a>Sản phẩm</a></span>
+</div>
+
+<!-- sidebar -->
+@Html.Partial("Sidebar")
+
+<div id="gallery" class="three_quarter">
+
+    <div id="content-page">
+        <div class="compare-bar">
+            <div class="compare-list">
+                <label>Sản phẩm so sánh: </label>
+                <ul id="list-compare">
+                    <li data-empty="true" class="item-compare"></li>
+                    <li data-empty="true" class="item-compare"></li>
+                    <li data-empty="true" class="item-compare"></li>
+                    <li data-empty="true" class="item-compare"></li>
+                </ul>
+                <a href="#" id="btnCompare" class="button small blue">So sánh</a>
+            </div>
+
+            <div class="compare-sortby">
+                <label>Sắp xếp: </label>
+                <select id="compare-sortby">
+                    <option value="price_asc">Giá tăng dần</option>
+                    <option value="price_desc">Giá giảm dần</option>
+                    <option value="name_asc">Tên A-Z</option>
+                    <option value="name_desc">Tên Z-A</option>
+                </select>
+            </div>
+        </div>
+
+        <section>
+            <figure>
+                <ul id="List" class="clear">
+                </ul>
+            </figure>
+        </section>
+
+        <nav class="pagination" id="nav-pages">
+            <div class="info-page">
+                <span class="current-page" id="current-page"></span> of 
+            <span class="total-page" id="total-page"></span>
+            </div>
+            <ul id="list-pages">
+            </ul>
+            <div class="view-page">
+                <label>Số sản phẩm: </label>
+                <select id="view-page">
+                    <option value="5">5</option>
+                    <option value="10">10</option>
+                    <option value="15">15</option>
+                </select>
+            </div>
+        </nav>
+    </div>
+</div>
+
+<script>
+
+    var div_not_found = "<div id='not-found' class=\"not-found\">Không tìm được kết quả nào</div>";
+
+    var template = "{{#.}}\
+                        <li>\
+                            <div class=\"product-info clear\">\
+                                <div class='product-image one_quarter'>\
+                                    <a href='/Product/Details?id={{MaSP}}'>\
+                                        <img src=\"@Link{{HinhAnhDaiDien}}\"/>\
+                                    </a>\
+                                    <div class='product-compare'>\
+                                        <input type='checkbox' value='' id='{{MaSP}}'\
+                                    name='compare' class='chk-compare'\
+                                    data-src=\"@Link{{HinhAnhDaiDien}}\" data-name='{{TenSP}}' />\
+                                        <label for='compare'>So sánh</label>\
+                                    </div>\
+                                </div>\
+                                <div class='product-main two_quarter'>\
+                                    <h2>\
+                                        <a href='/Product/Details?id={{MaSP}}'>{{TenSP}}</a>\
+                                    </h2>\
+                                    <div class='rating' data-score='{{DiemDanhGia}}'>\
+                                        <img src='/images/star-off.png' />\
+                                        <img src='/images/star-off.png' />\
+                                        <img src='/images/star-off.png' />\
+                                        <img src='/images/star-off.png' />\
+                                        <img src='/images/star-off.png' />\
+                                    </div>\
+                                    <ul>\
+                                        <li>CPU: {{ChiTietSanPham.CPU}}</li>\
+                                        <li>GPU: {{ChiTietSanPham.GPU}}</li>\
+                                        <li>Ram: {{ChiTietSanPham.DungluongRAM}} {{ChiTietSanPham.DonViRAM}}</li>\
+                                        <li>Màn hình: {{ChiTietSanPham.KichThuocMH}} inch&nbsp;{{ChiTietSanPham.DoPhanGiai}}\
+                                        </li>\
+                                        <li>Pin: {{ChiTietSanPham.DungLuongPin}} mAh</li>\
+                                        <li>Camera: {{ChiTietSanPham.Camera}}</li>\
+                                    </ul>\
+                                </div>\
+                                <div class='product-price one_quarter'>\
+                                    <h2>\
+                                          {{GiaToString}}\
+                                    </h2>\
+                                    <h3>Khuyến mãi:</h3>\
+                                    <ul>\
+                                        <li>Tặng ốp lưng</li>\
+                                        <li>Tai nghe</li>\
+                                    </ul>\
+                                    <div class='btn-addcart'>\
+                                        <a href='/ShoppingCart/AddToCart?id={{MaSP}}'>\
+                                            <img src='/images/btn_addcart_vn.gif' />\
+                                        </a>\
+                                    </div>\
+                                </div>\
+                            </div>\
+                        </li>\
+                {{/.}}";
+
+
+
+    $(document).ready(function () {
+        $('#frm-filter').submit();
+    });
+
+    function loadProductSuccess(data) {
+        if (data == null || data.count == 0) {
+            $('#content-page').hide();
+            $(div_not_found).appendTo('#gallery');
+        }
+        else {
+            $('#content-page').show();
+            $('#not-found').remove();
+            $('#List').html(Mustache.render(template, data.data));
+            setRating();
+            createNavPage(data.count, data.page);
+            $('.ajax-link').click(function (e) {
+                e.preventDefault();
+                var page = $(this).text().trim();
+                $('#page-frm-filter').attr('value', page);
+                $('#frm-filter').submit();
+            });
+
+            $(".chk-compare").click(function (e) {
+                if ($(this).is(':checked')) {
+                    addListCompare(this, e);
+                } else {
+                    var idx = $(this).attr('data-index');
+                    removeCompare(idx);
+                }
+            });
+        }
+    }
+
+    function createNavPage(count, page) {
+        $('#list-pages').children().remove();
+        var view = parseInt($('#view-page').val());
+        var totalPage = Math.round(count / view);
+        if (totalPage * view < count) {
+            totalPage++;
+        }
+        for (var i = 1; i <= totalPage; i++) {
+            if (i == page) {
+                $("<li><a href='#' class='active-page ajax-link'>" + i + "</a></li>").appendTo('#list-pages');
+            }
+            else {
+                $("<li><a href='#' class='ajax-link'>" + i + "</a></li>").appendTo('#list-pages');
+            }
+        }
+        $('#current-page').text(page);
+        $('#total-page').text(totalPage);
+    }
+</script>
+
+
+<div id="dialog" title="So sánh">
+    <p id="dialog-content"></p>
+</div>
+<script>
+    $("#dialog").dialog({
+        autoOpen: false,
+        modal: true,
+        buttons: {
+            OK: function () { //ok
+                $(this).dialog("close");
+            }
+        }
+    });
+
+    function checkEmptyList() {
+        var list = $('#list-compare').children();
+        for (var i = 0; i < list.length; i++) {
+            var li = $(list[i]);
+            if (li.attr('data-empty') == 'true') {
+                return i;
+            }
+        }
+
+        return -1;
+    }
+
+    function getNumberItemCompare() {
+        var list = $('#list-compare').children();
+        var count = 0;
+        for (var i = 0; i < list.length; i++) {
+            var li = $(list[i]);
+            if (li.attr('data-empty') == 'false') {
+                count++;
+            }
+        }
+
+        return count;
+    }
+
+    function compare() {
+        if (getNumberItemCompare() < 2) {
+            $('#dialog-content').text("Để so sánh bạn phải chọn ít nhất 2 sản phẩm!");
+            $("#dialog").dialog("open");
+        }
+        else {
+            var list = $('#list-compare').children();
+            var url = "/Product/Compare?";
+            var count = 0;
+            for (var i = 0; i < list.length; i++) {
+                var li = $(list[i]);
+                if (li.attr('data-empty') == 'false') {
+                    var id = li.attr('data-ref');
+                    if (count > 0) {
+                        url += "&product=" + id;
+                    }
+                    else {
+                        url += "product=" + id;
+                    }
+                    count++;
+                }
+            }
+            window.location.href = url;
+        }
+    }
+
+    function addListCompare(context, e) {
+        var index = checkEmptyList();
+        if (index != -1) {
+            var src = $(context).attr('data-src');
+            var name = $(context).attr('data-name');
+            var id = $(context).attr('id');
+
+            var list = $('#list-compare').children();
+            var li = $(list[index]);
+
+            var img = $("<img src='" + src + "' title='" + name + "' />");
+            img.appendTo(li);
+
+            li.attr('data-empty', false);
+            li.attr('data-ref', id);
+            $(context).attr('data-index', index);
+        } else {
+            e.preventDefault();
+            $('#dialog-content').text("Chỉ so sánh tối đa 4 sản phẩm!");
+            $("#dialog").dialog("open");
+        }
+    }
+
+    function removeCompare(index) {
+        var list = $('#list-compare').children();
+        var li = $(list[index]);
+        li.children().remove();
+        li.attr('data-empty', true);
+    }
+
+    function showRating(context, score) {
+        if (score == 0)
+            return;
+
+        var arr = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5];
+        var min = arr[0];
+        for (var i = 1; i < arr.length; i++) {
+            if (Math.abs(arr[i] - score) < Math.abs(min - score)) {
+                min = arr[i];
+            }
+        }
+        score = min;
+        var limit = Math.round(score - 0.1);
+
+        var list = $(context).children();
+        var index = 0;
+        for (; index < list.length; index++) {
+            var img = $(list[index]);
+            if (index < limit) {
+                img.attr('src', "/images/star-on.png");
+            } else {
+                img.attr('src', "/images/star-off.png");
+            }
+        }
+        if (score - limit > 0.1) {
+            var img = $(list[limit]);
+            img.attr('src', "/images/star-half.png");
+        }
+    }
+
+    function setRating() {
+        var ratings = $('#List').find('.rating');
+        for (var i = 0; i < ratings.length; i++) {
+            var rating = ratings[i];
+            var score = $(rating).attr('data-score');
+            showRating(rating, score);
+        }
+    }
+
+    $(document).ready(function () {
+        setRating();
+        $(".chk-select").click(function () {
+            $('#page-frm-filter').attr('value', 1);
+            $('#query-frm-filter').attr('value', "");
+            $('#frm-filter').submit();
+        });
+        
+        $(".item-compare").click(function () {
+            if ($(this).attr('data-empty') == 'false') {
+                $(this).children().remove();
+                $(this).attr('data-empty', true);
+                var id = $(this).attr('data-ref');
+                $('#' + id).prop('checked', false);
+            }
+        });
+
+        $('#btnCompare').click(function (e) {
+            e.preventDefault();
+            compare();
+        });
+
+        $('#view-page').change(function () {
+            var value = $(this).val();
+            $('#productPerPage-frm-filter').attr('value', value);
+            $('#page-frm-filter').attr('value', 1);
+            $('#frm-filter').submit();
+        });
+
+        $('#compare-sortby').change(function () {
+            var value = $(this).val();
+            $('#sortby-frm-filter').attr('value', value);
+            $('#frm-filter').submit();
+        });
+    });
+
+</script>

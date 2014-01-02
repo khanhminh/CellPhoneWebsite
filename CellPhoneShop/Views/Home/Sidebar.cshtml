@@ -1,0 +1,58 @@
+﻿<div id="sidebar_1" class="sidebar one_quarter first">
+    <div class="sidebox-wrapper">
+        <div id="brand" class="sidebox-wrapper">
+            <div class="sidebox-title">
+                <span>NHÀ SẢN XUẤT</span>
+            </div>
+            <div class="sidebox-body">
+                @{
+                    List<CellPhoneShop.NhaSanXuat> Brands = ViewBag.Brands;
+                    string link = ViewBag.LinkService;
+                }
+                @foreach (CellPhoneShop.NhaSanXuat nsx in Brands)
+                {
+                    <div class='icon-brand'>
+                        <a href="product?brand=@nsx.MaNSX">
+                            <img title="@nsx.Ten" src="@(link + nsx.Logo)">
+                        </a>
+                    </div>                
+                }
+            </div>
+        </div>
+
+        <div id="support-online" class="sidebox-wrapper">
+            <div class="sidebox-title">
+                <span>HỖ TRỢ KHÁCH HÀNG</span>
+            </div>
+            <div class="sidebox-body">
+                <div class="yh-support">
+                    <div class="tiltle-yh">Phòng kinh doanh:</div>
+                    <a href="ymsgr:sendIM?minhkhanh200830">
+                        <img alt="icon yahoo"
+                            class="yh-icon" border="0"
+                            src="http://opi.yahoo.com/online?u=minhkhanh200830&amp;m=g&amp;t=2">
+                    </a>
+                </div>
+                <div class="yh-support">
+                    <div class="tiltle-yh">Phòng kĩ thuật:</div>
+                    <a href="ymsgr:sendIM?minhkhanh200830">
+                        <img alt="icon yahoo"
+                            class="yh-icon" border="0"
+                            src="http://opi.yahoo.com/online?u=minhkhanh200830&amp;m=g&amp;t=2">
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="info-promotion" class="sidebox-wrapper">
+            <div class="sidebox-title">
+                <span>TIN TỨC CÔNG NGHỆ</span>
+            </div>
+            <div class="sidebox-body">
+                <div id="list-promotion">
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

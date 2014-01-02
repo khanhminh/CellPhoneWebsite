@@ -1,0 +1,181 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="SHORTCUT ICON" href="images/icon.gif" type="image/x-icon">
+        <title>@ViewBag.Title</title>
+        @Styles.Render("~/Content/css")
+        @Styles.Render("~/JqueryUi/css")
+        @Scripts.Render("~/bundles/modernizr")
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/jqueryui")        
+        @Scripts.Render("~/bundles/myscript")
+        <script>jQuery(document).ready(function ($) { $('img').removeAttr('width height'); }, null);</script>   
+        @*@RenderSection("MyScripts", required: false)*@     
+        @RenderSection("scripts", required: false)
+        <!--[if lt IE 9]>
+        <link href="layout/styles/ie/ie8.css" rel="stylesheet" type="text/css" media="all">
+        <script src="layout/scripts/ie/css3-mediaqueries.min.js"></script>
+        <script src="layout/scripts/ie/html5shiv.min.js"></script>
+        <![endif]-->
+
+        <script>
+            (function (i, s, o, g, r, a, m) {
+                i['GoogleAnalyticsObject'] = r; i[r] = i[r] || function () {
+                    (i[r].q = i[r].q || []).push(arguments)
+                }, i[r].l = 1 * new Date(); a = s.createElement(o),
+                m = s.getElementsByTagName(o)[0]; a.async = 1; a.src = g; m.parentNode.insertBefore(a, m)
+            })(window, document, 'script', '//www.google-analytics.com/analytics.js', 'ga');
+
+            ga('create', 'UA-41946591-1', 'somee.com');
+            ga('send', 'pageview');
+        </script>
+    </head>
+    <body>
+<div class="wrapper row1">
+  <header id="header" class="full_width clear">
+    <div id="logo" class="one_half"><a href="#" title="Minh Khánh"><img src="@Url.Content("~/Images/mylogo.png")"/></a></div>
+    <div id="header-contact" class="one_half">
+        <section id="login">
+              @Html.Partial("_LoginPartial")
+        </section>
+    </div>
+  </header>
+</div>
+<!-- ################################################################################################ -->
+<div class="wrapper row2">
+  <nav id="topnav">
+    <ul class="clear">
+      <li>@Html.ActionLink("Trang chủ", "Index", "Home", null, new { @class = "active" })</li>
+      <li>@Html.ActionLink("Sản phẩm", "Index", "Product")
+        <ul>
+            @foreach (CellPhoneShop.NhaSanXuat nsx in ViewBag.Brands)
+            {
+            <li>
+              @Html.ActionLink(nsx.Ten, "Index", "Product", new { brand = nsx.MaNSX}, null)
+            </li>
+            }
+          
+        </ul>
+      </li>
+      <li>@Html.ActionLink("Liên hệ", "Contact", "Home")</li>
+      <li>@Html.ActionLink("Giới thiệu", "About", "Home")</li>
+      @* @if (Request.IsAuthenticated && User.IsInRole("Administrator"))
+       {
+           <li>@Html.ActionLink("Admin", "Index", "Admin")</li>
+       }*@
+       @if (Request.IsAuthenticated)
+       {
+           <li>@Html.ActionLink("Quản lý đơn hàng", "Index", "Order")</li>
+       }
+    </ul>
+  </nav>
+</div>
+
+<div class="wrapper row2">
+ 
+  <div id="intro">
+    <div class="boxholder"">
+        
+    <div id="amazingslider-1">
+        <ul class="amazingslider-slides" style="display:none;">
+            <li><img src="@Url.Content("~/Images/slider/1.png")" alt="1" /></li>
+            <li><img src="@Url.Content("~/Images/slider/2.png")" alt="2" /></li>
+            <li><img src="@Url.Content("~/Images/slider/3.png")" alt="3" /></li>
+        </ul>
+    </div>
+    <!-- End of body section HTML codes -->
+    
+</div>
+  </div>
+  <div class="clear"></div>
+
+</div>
+
+<!-- Search bar & Shopping Cart -->
+<div class="wrapper row3">
+	<div id="search">
+		<div class="one_half">
+            @using (Html.BeginForm("Search", "Product", FormMethod.Get))
+            {
+                <input type="text" name="query" value="@ViewBag.query" class="one_half" id="text-search-product"/> 
+				<input type="submit" value="Tìm kiếm" class="one_ten" id="btnSearch"/>
+            }
+		</div>
+        @{Html.RenderAction("CartSummary", "ShoppingCart");}
+	</div>
+</div>
+
+<!-- content -->
+<div class="wrapper row3">
+  <div id="container">
+    @RenderBody()
+    <div class="clear"></div>
+  </div>
+</div>
+<!-- Footer -->
+<div class="wrapper row2">
+  <div id="footer" class="clear">
+    <div class="one_quarter first">
+      <h2 class="footer_title">THÔNG TIN CÔNG TY</h2>
+      <nav class="footer_nav">
+        <ul class="nospace">
+          <li><a href="#">&nbsp;&nbsp;&nbsp;Giới thiệu công ty</a></li>
+          <li><a href="#">&nbsp;&nbsp;&nbsp;Tiêu chí bán hàng</a></li>
+          <li><a href="#">&nbsp;&nbsp;&nbsp;Hệ thống trung tâm</a></li>
+        </ul>
+      </nav>
+    </div>
+    <div class="one_quarter">
+      <h2 class="footer_title">HỖ TRỢ KHÁCH HÀNG</h2>
+      <nav class="footer_nav">
+        <ul class="nospace">
+          <li><a href="#">&nbsp;&nbsp;&nbsp;Hướng dẫn mua hàng</a></li>
+          <li><a href="#">&nbsp;&nbsp;&nbsp;Quy định đổi hàng</a></li>
+          <li><a href="#">&nbsp;&nbsp;&nbsp;Thanh toán & giao hàng</a></li>
+        </ul>
+      </nav>
+    </div>      
+    <div class="one_quarter">
+      <h2 class="footer_title">DỊCH VỤ KHÁCH HÀNG</h2>
+      <nav class="footer_nav">
+        <ul class="nospace">
+          <li><a href="#">&nbsp;&nbsp;&nbsp;Phiếu mua hàng</a></li>
+          <li><a href="#">&nbsp;&nbsp;&nbsp;Đặt hàng trực tuyến</a></li>
+          <li><a href="#">&nbsp;&nbsp;&nbsp;Mua hàng trả góp</a></li>
+        </ul>
+      </nav>
+     </div>   
+     <div class="one_quarter">
+      <h2 class="footer_title">THÔNG TIN WEBSITE</h2>
+      <nav class="footer_nav">
+        <ul class="nospace">
+          <li><a href="about.html">&nbsp;&nbsp;&nbsp;Giới thiệu</a></li>
+          <li><a href="contact.html">&nbsp;&nbsp;&nbsp;Liên hệ</a></li>
+          <li><a href="#">&nbsp;&nbsp;&nbsp;Sơ đồ website</a></li>
+        </ul>
+      </nav>
+    </div>    
+  </div>
+</div>
+<div class="wrapper row4">
+  <div id="copyright" class="clear">
+    <div id="info-copyright">
+       <p class="fl_left">Copyright &copy; 2013 Công ty TM-DV Minh Khánh</p>
+       <p class="fl_right">ĐT: 01285443591</p>
+    </div>
+  </div>
+</div>
+<script>
+    $(document).ready(function () {
+        $('#btnSearch').click(function (e) {
+            var text = $('#text-search-product').val();
+            if (text.trim() == "") {
+                e.preventDefault();
+            }
+        });
+    });
+</script>
+</body>
+</html>

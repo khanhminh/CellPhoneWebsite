@@ -1,0 +1,105 @@
+﻿@model CellPhoneShop.ViewModel.DetailsPayment
+@using CellPhoneShop.ViewModel
+@using CellPhoneShop
+
+@{
+    ViewBag.Title = "Thông tin đơn hàng";
+}
+<h2 class="title-content push50">THÔNG TIN THANH TOÁN</h2>
+<div id="nav-shopping">
+    <strong>
+        <span class="active-link-prev">
+            <a href="/ShoppingCart/Index">Giỏ hàng</a>
+        </span>
+        »
+        <span class="active-link">
+            <a href="/Checkout/DetailsPayment">Thông tin đơn hàng</a>
+        </span>
+        » Hoàn tất
+    </strong>
+</div>
+@Html.Partial("ShoppingCartPartial", (ShoppingCart)ViewBag.Cart, new ViewDataDictionary { { "AllowRemove", false } })
+
+@using (Html.BeginForm("DetailsPayment", "Checkout", FormMethod.Post, new { id = "frmCheckout" }))
+{
+    @Html.AntiForgeryToken()
+    <div id="receiver">
+        <table>
+            <tr>
+                <th class="title-table" colspan="2">Địa chỉ giao hàng</th>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Receiver.HoTen) (<span class="mark">*</span>)</td>
+                <td>
+                    @Html.EditorFor(model => model.Receiver.HoTen)
+                    @Html.ValidationMessageFor(model => model.Receiver.HoTen)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Receiver.DiaChi) (<span class="mark">*</span>)</td>
+                <td>
+                    @Html.EditorFor(model => model.Receiver.DiaChi)
+                    @Html.ValidationMessageFor(model => model.Receiver.DiaChi)
+                </td>
+            </tr>
+            <tr>
+                <td>@Html.LabelFor(model => model.Receiver.DienThoai) (<span class="mark">*</span>)</td>
+                <td>
+                    @Html.EditorFor(model => model.Receiver.DienThoai)
+                    @Html.ValidationMessageFor(model => model.Receiver.DienThoai)
+                </td>
+            </tr>
+        </table>
+    </div>    
+
+    <div id="ptgh">
+        <table>
+            <tr>
+                <th class="title-table" colspan="2">Phương thức giao hàng</th>
+            </tr>
+            @foreach (PhuongThucGiaoHang ptgh in ViewBag.DsPTGH)
+            {
+                <tr>
+                    <td>
+                        @Html.RadioButtonFor(model => model.MaPTGH, ptgh.MaPTGH)
+                    </td>
+                    <td>@ptgh.Ten</td>
+                </tr>
+            }
+            <tr>
+                <td colspan="2">
+                    @Html.ValidationMessageFor(model => model.MaPTGH)
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div id="pttt">
+        <table>
+            <tr>
+                <th class="title-table" colspan="2">Phương thức thanh toán</th>
+            </tr>
+            @foreach (PhuongThucThanhToan pttt in ViewBag.DsPTTT)
+            {
+                <tr>
+                    <td>
+                        @Html.RadioButtonFor(model => model.MaPTTT, pttt.MaPTTT)
+                    </td>
+                    <td>@pttt.Ten</td>
+                </tr>
+            }
+            <tr>
+                <td colspan="2">
+                    @Html.ValidationMessageFor(model => model.MaPTTT)
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <p>
+        <input type="submit" value="Xác nhận" />
+    </p>
+}
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

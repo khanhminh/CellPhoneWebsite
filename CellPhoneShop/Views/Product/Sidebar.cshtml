@@ -1,0 +1,104 @@
+﻿@using CellPhoneShop
+<div id="sidebar_1" class="sidebar one_quarter first">
+    <div class="sidebox-wrapper">
+
+        <div id="categories" class="sidebox-wrapper">
+            <div class="sidebox-title">
+                <span>PHÂN LOẠI</span>
+            </div>
+            <div class="sidebox-body">
+                @using (Ajax.BeginForm("Filter", "Product", null, new AjaxOptions() { HttpMethod = "POST", OnSuccess = "loadProductSuccess" }, new { id = "frm-filter" }))
+                {
+                    <input type="hidden" name="query" value="@ViewBag.query" id="query-frm-filter" />
+                    <input type="hidden" name="page" value="1" id="page-frm-filter" />
+                    <input type="hidden" name="view" value="5" id="productPerPage-frm-filter" />
+                    <input type="hidden" name="sortby" value="price_asc" id="sortby-frm-filter"/>
+                    <div class="group-narrow">
+                        <h4>Giá</h4>
+                        <ul>
+                            <li>
+                                <input type="checkbox" class="chk-select" name="price" value="0_500000" />
+                                <label>
+                                    <span>0 - 500,000</span>VNĐ
+                                </label>
+                            </li>
+                            <li>
+                                <input type="checkbox" class="chk-select" name="price" value="500000_1000000" />
+                                <label>
+                                    <span>500,000 - 1,000,000</span>VNĐ
+                                </label>
+                            </li>
+                            <li>
+                                <input type="checkbox" class="chk-select" name="price" value="1000000_3000000" />
+                                <label>
+                                    <span>1,000,000 - 3,000,000</span>VNĐ
+                                </label>
+                            </li>
+                            <li>
+                                <input type="checkbox" class="chk-select" name="price" value="3000000_5000000" />
+                                <label>
+                                    <span>3,000,000 - 5,000,000</span>VNĐ
+                                </label>
+                            </li>
+                            <li>
+                                <input type="checkbox" class="chk-select" name="price" value="5000000_10000000" />
+                                <label>
+                                    <span>5,000,000 - 10,000,000</span>VNĐ
+                                </label>
+                            </li>
+                            <li>
+                                <input type="checkbox" class="chk-select" name="price" value="10000000_50000000" />
+                                <label>
+                                    <span>10,000,000 - 50,000,000</span>VNĐ
+                                </label>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="group-narrow">
+                        <h4>Hệ điều hành</h4>
+                        <ul>
+                            @foreach (HeDieuHanh hdh in ViewBag.OSs)
+                            {
+                                <li>
+                                    <input type="checkbox" name="os" value="@hdh.MaHDH" class="chk-select" />
+									<label>@hdh.Ten</label>
+								</li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="group-narrow">
+                        <h4>Nhà sản xuất</h4>
+                        <ul>
+                            @foreach (NhaSanXuat nsx in ViewBag.Brands)
+                            {
+                                <li>
+                                    @if (ViewBag.brand != null && ViewBag.brand == nsx.MaNSX)
+                                    {
+                                        <input type="checkbox" name="brand" checked="checked" class="chk-select" value="@nsx.MaNSX" />
+                                    }
+                                    else 
+                                    {
+                                        <input type="checkbox" name="brand" class="chk-select" value="@nsx.MaNSX" />
+                                    }
+									<label>@nsx.Ten</label>
+								</li>
+                            }
+                        </ul>
+                    </div>
+                    <div class="group-narrow">
+                        <h4>Đánh giá</h4>
+                        <ul>
+                            @for (int i = 1; i <=5 ; i++)
+                            {
+                                <li>
+                                    <input type="checkbox" name="star" value="@i" class="chk-select" />
+									<img src="/images/@(i + "star.png")">
+								</li>
+                            }
+                        </ul>
+                    </div>                
+                }
+            </div>
+        </div>
+    </div>
+</div>

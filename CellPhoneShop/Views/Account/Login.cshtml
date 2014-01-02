@@ -1,0 +1,77 @@
+﻿@model CellPhoneShop.LoginModel
+
+@{
+    ViewBag.Title = "Đăng nhập";
+}
+<h2 class="title-content push50">ĐĂNG NHẬP</h2>
+<div class="clear push20"></div>
+<div>
+    <p id="intro">
+        Chào mừng bạn đến với CellPhoneShop. Nếu đây là lần đầu tiên tham gia, vui lòng @Html.ActionLink("đăng ký thành viên", "Register", "Account").
+    </p>
+</div>
+<div id="form-login" class="one_half">
+    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true);
+        <table>
+            <tr>
+                <th class="title-table" colspan="3">Tài khoản</th>
+            </tr>
+            <tr>
+                <td class="td-bold">@Html.LabelFor(model => model.TenDangNhap)</td>
+                <td colspan="3">
+                    @Html.EditorFor(model => model.TenDangNhap)
+                    @Html.ValidationMessageFor(model => model.TenDangNhap)
+                </td>
+            </tr>
+            <tr>
+                <td class="td-bold">@Html.LabelFor(model => model.MatKhau)</td>
+                <td colspan="3">
+                    @Html.EditorFor(model => model.MatKhau)
+                    @Html.ValidationMessageFor(model => model.MatKhau)
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    @Html.CheckBoxFor(model => model.NhoMatKhau)
+                    @Html.LabelFor(model => model.NhoMatKhau)
+                </td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td id="inline-button">
+                    <input type="submit" value="Đăng nhập" />
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    }
+</div>
+<div id="notify-login" class="one_half">
+    <div style="margin-top: 50px;margin-left: 50px">
+        @using (Html.BeginForm("LoginFacebook", "Account", new { ReturnUrl = ViewBag.ReturnUrl }))
+        {
+            @Html.AntiForgeryToken()
+            <fieldset id="socialLoginList">
+                <legend>Log in using another service</legend>
+                <p>
+                    <button
+                        type="submit"
+                        name="provider"
+                        value="facebook"
+                        class="zocial facebook"
+                        title="Đăng nhập với tài khoản Facebook">
+                        Đăng nhập với tài khoản Facebook
+                    </button>
+                </p>
+            </fieldset>
+        }
+    </div>
+</div>
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

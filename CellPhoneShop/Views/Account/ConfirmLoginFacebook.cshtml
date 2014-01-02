@@ -1,0 +1,26 @@
+﻿@model CellPhoneShop.FacebookUserConfirm
+@{
+    ViewBag.Title = "ConfirmLoginFacebook";
+}
+
+<h2 class="title-content push50">ĐĂNG KÝ TÀI KHOẢN</h2>
+<div class="clear push20"></div>
+<p style="color:green">Bạn đăng nhập thành công với tài khoản Facebook, vui lòng đăng ký Tên đăng nhập CellPhone</p>
+<div class="confirm-login">
+    @using (Html.BeginForm("ConfirmLoginFacebook", "Account", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.ValidationSummary(true);
+    
+        @Html.LabelFor(model => model.TenDangNhap, new {@class = "td-bold"})
+        @Html.EditorFor(model => model.TenDangNhap)
+        @Html.ValidationMessageFor(model => model.TenDangNhap)
+
+        <input type="submit" value="Đăng ký"  class="button small blue"/>
+    }
+</div>
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

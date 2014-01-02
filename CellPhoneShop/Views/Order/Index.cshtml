@@ -1,0 +1,102 @@
+﻿@model List<CellPhoneShop.DonDatHang>
+@using CellPhoneShop
+@{
+    ViewBag.Title = "Quản lý đơn hàng";
+}
+
+<div class="title-content">
+    <h2>QUẢN LÝ ĐƠN HÀNG</h2>
+</div>
+<div class="nav-page push30">
+    <a>Cellphone</a> » <span class="active-link"><a>Quản lý đơn hàng</a>
+    </span>
+</div>
+
+<div id="title-order">
+    <h3>DANH SÁCH ĐƠN HÀNG</h3>
+    <div class="clear"></div>
+</div>
+@if (Model != null && Model.Count > 0)
+{
+		
+    <table id="table-order">
+        <tr>
+            <th>Mã đơn hàng</th>
+            <th>Ngày đặt hàng</th>
+            <th>Tổng giá trị</th>
+            <th>Trạng thái</th>
+            <th>Chức năng</th>
+        </tr>
+        @foreach (DonDatHang dh in Model)
+        {    
+            <tr>
+                <td>@dh.MaDDH</td>
+                <td>
+                    @string.Format("{0:dd/MM/yyyy}", dh.NgayLap)
+                </td>
+                <td>
+                    @string.Format("{0:0,0} VNĐ", dh.DonGia)
+                </td>
+                <td>@dh.TrangThaiDonDatHang.TenTrangThai</td>
+                <td>
+                    <a href="/Order/Details?id=@dh.MaDDH" style="color:blue">Xem</a>
+                    @if (dh.MaTrangThai == "CGTT")
+                    {
+                        <a href="/Order/Delete?id=@dh.MaDDH" class="btnDelete" data-id="@dh.MaDDH" style="color:red">Hủy</a>
+                    }
+                </td>
+            </tr>
+        }
+    </table>
+    <nav class="pagination">
+        <ul>
+            @for (int i = 0; i < ViewBag.totalPage; i++)
+            {
+                int page = i + 1;
+                string strClass = "";
+                if (page == @ViewBag.page)
+                {
+                    strClass = " active-page";
+                }
+                <li>
+                    @Html.ActionLink(page.ToString(), "Index", new { page = page }, new { @class = strClass })
+                </li>   
+            }
+        </ul>
+    </nav>
+    <div id="dialog" title="Hủy đơn hàng">
+        <p id="dialog-content"></p>
+    </div>
+}
+else
+{
+    <h5 class="notify-order">Bạn không có đơn hàng nào</h5>
+}
+
+
+<script>
+    var link = "";
+    $("#dialog").dialog({
+        autoOpen: false,
+        modal: true,
+        buttons: {
+            OK: function () {
+                $(this).dialog("close");
+                window.location.href = link;
+            },
+            CANCEL: function () {
+                $(this).dialog("close");
+            }
+        }
+    });
+
+    $(document).ready(function () {
+        $('.btnDelete').click(function (e) {
+            e.preventDefault();
+            var id = $(this).attr("data-id");
+            $('#dialog-content').text("Bạn có muốn hủy đơn hàng: " + id);
+            link = $(this).attr("href");
+            $("#dialog").dialog("open");
+        });
+    });
+</script>
